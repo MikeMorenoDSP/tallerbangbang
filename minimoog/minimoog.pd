@@ -1,4 +1,4 @@
-#N canvas 0 22 1255 773 12;
+#N canvas 0 22 1280 756 12;
 #X declare -path ./abs;
 #X obj 166 13 cnv 10 366 168 empty empty empty 20 12 0 14 #75d5ff #404040
 0;
@@ -54,11 +54,11 @@
 -2 -8 0 12 #404040 #ffffff #000000 5700 1;
 #X obj 266 263 hsl 101 19 0 1 0 1 \$0-modSustain empty Sustain -2 -8
 0 12 #404040 #ffffff #000000 0 1;
-#X obj 26 323 hsl 101 19 1 5000 1 1 \$0-Attack empty Attack -2 -8 0
+#X obj 26 323 hsl 101 19 1 5000 1 1 \$0-attack empty Attack -2 -8 0
 12 #404040 #ffffff #000000 0 1;
-#X obj 146 323 hsl 101 19 10 10000 1 1 \$0-Decay empty Decay\\\ &\\\ Rel.
+#X obj 146 323 hsl 101 19 10 10000 1 1 \$0-decay empty Decay\\\ &\\\ Rel.
 -2 -8 0 12 #404040 #ffffff #000000 2300 1;
-#X obj 266 323 hsl 101 19 0 1 0 1 \$0-Sustain empty Sustain -2 -8 0
+#X obj 266 323 hsl 101 19 0 1 0 1 \$0-sustain empty Sustain -2 -8 0
 12 #404040 #ffffff #000000 6800 1;
 #X text 22 285 Amp. Env –––––––––––––––––––––––––––––––––––––––––
 ;
@@ -97,7 +97,7 @@
 -2 -8 0 12 #404040 #ffffff #000000 7000 1;
 #X obj 730 327 cnv 10 380 80 empty empty MEZCLADORA 290 10 0 14 #ff89d8
 #000000 0;
-#X obj 729 513 cnv 10 380 50 empty empty DELAY 330 10 0 14 #ff7d78
+#X obj 729 513 cnv 10 380 60 empty empty DELAY 330 10 0 14 #ff7d78
 #000000 0;
 #X obj 728 10 cnv 10 380 180 empty empty TECLADO 310 10 0 14 #feffc6
 #000000 0;
@@ -111,7 +111,7 @@
 #X obj 743 111 mono.in;
 #X obj 743 169 send \$0-pitch;
 #X obj 789 140 send \$0-gate;
-#N canvas 1101 22 819 759 oscillator-1 0;
+#N canvas 4 22 832 756 oscillator-1 0;
 #X obj 11 568 cnv 10 500 125 empty empty empty 20 12 0 14 #75d5ff #404040
 0;
 #X obj 18 575 oscillator~;
@@ -126,14 +126,10 @@
 #X obj 228 386 line~;
 #X obj 18 405 +~;
 #X obj 18 458 mtof~;
-#X obj 18 707 outlet~;
 #X obj 77 498 receive \$0-pulse-1;
 #X obj 77 522 pack f 20;
 #X obj 77 546 line~;
 #X obj 18 429 +~;
-#X obj 361 352 receive~ \$0-modulation;
-#X obj 361 410 *~;
-#X obj 379 381 receive \$0-oscMod;
 #X obj 228 338 / 100;
 #X text 36 224 // Recibe la info de los controles de octave y tune
 para afinar el oscilador usando octavas y cents.;
@@ -141,16 +137,11 @@ para afinar el oscilador usando octavas y cents.;
 #X text 68 313 <- convierte a octava;
 #X obj 99 629 receive \$0-waveform-1;
 #X text 217 498 <- Cambia el ancho de pulso de la onda cuadrada;
-#X text 361 312 // Recibe la señal del modulador y prende/apaga usando
-el toggle de "oscMod";
 #X text 108 575 <- Oscilador tipo polyBLEP libre de Aliasing (suena
 más análogo);
 #X text 108 658 <- multiplexor: Entran tres señales y eliges cuál
 quieres que salga.;
-#X text 78 707 <- Salida-1: Audio del Oscilador;
 #X text 68 458 <- Convierte valores MIDI a frecuencia (Hz);
-#X text 391 410 <- Este tipo de modulación es exponencial por sumarse
-antes del mtof~;
 #X obj 11 8 cnv 10 450 85 empty empty empty 20 12 0 14 #75d5ff #404040
 0;
 #X obj 18 101 receive \$0-pitch;
@@ -164,77 +155,115 @@ un portamento \, glissando o "glide" de la nota usando [lop~];
 #X text 18 31 De manera general \, todos los controles de afinación
 y control de pitch del oscilador para luego enviar las tres formas
 del oscilador a un multiplexor y enviarlas a la mezcladora.;
+#X obj 357 309 cnv 10 455 140 empty empty empty 200 10 0 14 #ffd478
+#000000 0;
+#X obj 361 352 receive~ \$0-modulation;
+#X obj 361 410 *~;
+#X obj 379 381 receive \$0-oscMod;
+#X text 361 312 // Recibe la señal del modulador y prende/apaga usando
+el toggle de "oscMod";
+#X text 391 410 <- Este tipo de modulación es exponencial por sumarse
+antes del mtof~;
+#X obj 11 696 cnv 10 380 40 empty empty empty 290 10 0 14 #ff89d8 #000000
+0;
+#X obj 18 707 outlet~;
+#X text 78 707 <- Salida de Oscilador hacia mezcladora;
+#X text 518 555 [oscillator~];
+#X text 528 575 Entrada-1: Frecuencia en Hz;
+#X text 528 595 Entrada-2: Pulso de forma de onda cuadrada;
+#X text 538 615 (0 a 1);
+#X text 528 635 Salida-1: Diente de Sierra;
+#X text 528 655 Salida-2: Onda Cuadrada;
+#X text 528 675 Salida-3: Onda Triangular;
 #X connect 1 0 2 0;
 #X connect 1 1 2 1;
 #X connect 1 2 2 2;
-#X connect 2 0 13 0;
+#X connect 2 0 41 0;
 #X connect 3 0 11 0;
 #X connect 4 0 5 0;
 #X connect 5 0 6 0;
 #X connect 6 0 7 0;
 #X connect 7 0 3 1;
-#X connect 8 0 21 0;
+#X connect 8 0 17 0;
 #X connect 9 0 10 0;
 #X connect 10 0 11 1;
-#X connect 11 0 17 0;
+#X connect 11 0 16 0;
 #X connect 12 0 1 0;
+#X connect 13 0 14 0;
 #X connect 14 0 15 0;
-#X connect 15 0 16 0;
-#X connect 16 0 1 1;
-#X connect 17 0 12 0;
-#X connect 18 0 19 0;
-#X connect 19 0 17 1;
-#X connect 20 0 19 1;
-#X connect 21 0 9 0;
-#X connect 25 0 2 3;
-#X connect 34 0 35 0;
-#X connect 35 0 3 0;
-#X connect 36 0 35 1;
+#X connect 15 0 1 1;
+#X connect 16 0 12 0;
+#X connect 17 0 9 0;
+#X connect 21 0 2 3;
+#X connect 27 0 28 0;
+#X connect 28 0 3 0;
+#X connect 29 0 28 1;
+#X connect 35 0 36 0;
+#X connect 36 0 16 1;
+#X connect 37 0 36 1;
 #X restore 738 240 pd oscillator-1;
 #X obj 831 333 noise~;
-#N canvas 73 320 450 377 modEnvelope 0;
-#X obj 42 197 en.adsr~;
-#X obj 55 64 receive \$0-modAttack;
-#X obj 42 34 receive \$0-gate;
-#X obj 68 91 receive \$0-modDecay;
-#X obj 68 115 t f f;
-#X obj 81 144 receive \$0-modSustain;
-#X obj 42 221 *~;
-#X obj 244 154 receive \$0-envAmount;
-#X obj 244 178 pack f 20;
-#X obj 244 202 line~;
-#X obj 42 245 outlet~;
-#X connect 0 0 6 0;
-#X connect 1 0 0 1;
-#X connect 2 0 0 0;
+#N canvas 2 22 522 555 modEnvelope 0;
+#X obj 21 11 cnv 10 450 60 empty empty empty 265 10 0 14 #72fa78 #000000
+0;
+#X obj 39 186 receive \$0-modAttack;
+#X obj 26 116 receive \$0-gate;
+#X obj 52 213 receive \$0-modDecay;
+#X obj 52 237 t f f;
+#X obj 65 266 receive \$0-modSustain;
+#X obj 26 473 *~;
+#X obj 64 386 receive \$0-envAmount;
+#X obj 64 410 pack f 20;
+#X obj 64 434 line~;
+#X obj 26 507 outlet~;
+#X text 26 36 Envolvente dedicado a modular la frecuencia de corte
+del filtro.;
+#X text 64 346 //Recibe la cantidad de modulacion en notas MIDI \;
+(de 0 a 211) traducido a (0 Hz a 8.8 kHz);
+#X text 39 146 // Recibe los controles del envolvente \, en el minimoog
+el control de Decay y Release es el mismo.;
+#X text 26 16 Mod. Envelope;
+#X obj 11 299 cnv 10 400 30 empty empty empty 265 10 0 14 #72fa78 #000000
+0;
+#X obj 26 304 en.adsr~;
+#X text 96 304 <- Generador de envolvente tipo ADSR.;
+#X text 86 507 <- Salida del envolvente a modular el filtro.;
+#X text 26 76 // Recibe el gate del control del teclado para activar
+el envolvente. 1 = Encencido \, 0 = Apagado;
+#X text 217 178 [en.adsr~];
+#X text 227 198 Entrada-1: Gate (0/1);
+#X text 227 218 Entrada-2: Ataque en milisegundos;
+#X text 227 238 Entrada-3: Decay en milisegundos;
+#X text 227 258 Entrada-4: Sustain en amplitud de 0 a 1;
+#X text 227 278 Entrada-5: Release en milisegundos;
+#X connect 1 0 16 1;
+#X connect 2 0 16 0;
 #X connect 3 0 4 0;
-#X connect 4 0 0 2;
-#X connect 4 1 0 4;
-#X connect 5 0 0 3;
+#X connect 4 0 16 2;
+#X connect 4 1 16 4;
+#X connect 5 0 16 3;
 #X connect 6 0 10 0;
 #X connect 7 0 8 0;
 #X connect 8 0 9 0;
 #X connect 9 0 6 1;
-#X restore 798 415 pd modEnvelope;
-#N canvas 178 435 1045 413 mixer 0;
+#X connect 16 0 6 0;
+#X restore 798 425 pd modEnvelope;
+#N canvas 12 25 1045 450 mixer 0;
 #X obj 7 10 cnv 10 410 60 empty empty empty 310 10 0 14 #ff89d8 #000000
 0;
 #X obj 12 261 *~;
 #X obj 40 184 pow 2;
 #X obj 40 208 pack f 20;
 #X obj 40 232 line~;
-#X obj 12 101 inlet~;
 #X obj 182 261 *~;
 #X obj 210 184 pow 2;
 #X obj 210 208 pack f 20;
 #X obj 210 232 line~;
-#X obj 182 101 inlet~;
 #X obj 352 261 *~;
 #X obj 380 184 pow 2;
 #X obj 380 208 pack f 20;
 #X obj 380 232 line~;
 #X obj 380 160 receive \$0-level-3;
-#X obj 352 101 inlet~;
 #X obj 40 160 receive \$0-level-1;
 #X obj 210 160 receive \$0-level-2;
 #X obj 274 315 +~;
@@ -245,8 +274,6 @@ del oscilador a un multiplexor y enviarlas a la mezcladora.;
 #X obj 550 232 line~;
 #X obj 522 101 inlet~;
 #X obj 550 160 receive \$0-noise;
-#X obj 274 383 outlet~;
-#X text 12 81 Entrada-1: Oscilador-1;
 #X text 522 81 Entrada-4: White Noise;
 #X text 550 140 // Recibe el valor de volumen del slider (de 0 a 1)
 ;
@@ -254,123 +281,144 @@ del oscilador a un multiplexor y enviarlas a la mezcladora.;
 (mas natural al oyente);
 #X text 620 218 <- Suaviza los valores escalonados con un valor de
 20 ms para evitar clicks.;
-#X text 182 81 Entrada-2: Oscilador-2;
-#X text 352 81 Entrada-3: Oscilador-3;
 #X text 313 325 <- Suma todas las señales y dividelo entre el numero
 total de señales (En este caso 4). Esto para "normalizar" la señal
 entrante y que no distorsione.;
-#X text 334 383 <- Salida de Audio;
 #X text 12 11 Mixer;
 #X text 12 31 Aquí controlamos el nivel individual de cada oscilador
 y ruido para luego sumarlo y enviarlo a al filtro.;
-#X connect 1 0 19 0;
+#X obj 7 76 cnv 10 510 50 empty empty empty 20 12 0 14 #75d5ff #404040
+0;
+#X obj 12 101 inlet~;
+#X obj 182 101 inlet~;
+#X obj 352 101 inlet~;
+#X text 12 81 Entrada-1: Oscilador-1;
+#X text 182 81 Entrada-2: Oscilador-2;
+#X text 352 81 Entrada-3: Oscilador-3;
+#X obj 261 373 cnv 10 380 50 empty empty empty 265 10 0 14 #72fa78
+#000000 0;
+#X obj 274 383 outlet~;
+#X text 334 383 <- Salida de mezcladora hacia el filtro;
+#X connect 1 0 16 0;
 #X connect 2 0 3 0;
 #X connect 3 0 4 0;
 #X connect 4 0 1 1;
-#X connect 5 0 1 0;
-#X connect 6 0 19 1;
+#X connect 5 0 16 1;
+#X connect 6 0 7 0;
 #X connect 7 0 8 0;
-#X connect 8 0 9 0;
-#X connect 9 0 6 1;
-#X connect 10 0 6 0;
-#X connect 11 0 19 1;
-#X connect 12 0 13 0;
-#X connect 13 0 14 0;
-#X connect 14 0 11 1;
-#X connect 15 0 12 0;
-#X connect 16 0 11 0;
-#X connect 17 0 2 0;
-#X connect 18 0 7 0;
+#X connect 8 0 5 1;
+#X connect 9 0 16 1;
+#X connect 10 0 11 0;
+#X connect 11 0 12 0;
+#X connect 12 0 9 1;
+#X connect 13 0 10 0;
+#X connect 14 0 2 0;
+#X connect 15 0 6 0;
+#X connect 16 0 17 0;
+#X connect 17 0 39 0;
+#X connect 18 0 16 1;
 #X connect 19 0 20 0;
-#X connect 20 0 27 0;
-#X connect 21 0 19 1;
-#X connect 22 0 23 0;
-#X connect 23 0 24 0;
-#X connect 24 0 21 1;
-#X connect 25 0 21 0;
-#X connect 26 0 22 0;
+#X connect 20 0 21 0;
+#X connect 21 0 18 1;
+#X connect 22 0 18 0;
+#X connect 23 0 19 0;
+#X connect 32 0 1 0;
+#X connect 33 0 5 0;
+#X connect 34 0 9 0;
 #X restore 738 365 pd mixer;
-#N canvas 199 458 493 330 filter 0;
-#X obj 118 238 bob~;
-#X obj 130 25 receive \$0-cutoff;
-#X obj 130 49 pack f 20;
-#X obj 130 73 line~;
-#X obj 130 107 +~;
-#X obj 223 88 inlet~;
-#X obj 130 131 +~;
-#X obj 286 54 receive~ \$0-modulation;
-#X obj 286 112 *~;
-#X obj 130 155 mtof~;
-#X obj 304 83 receive \$0-filterMod;
-#X obj 303 171 receive \$0-resonance;
-#X obj 303 195 pack f 20;
-#X obj 303 219 line~;
-#X obj 16 175 inlet~;
-#X obj 118 262 outlet~;
-#X obj 130 179 clip~ 20 17000;
-#X connect 0 0 15 0;
+#N canvas 5 22 877 631 filter 0;
+#X obj 73 201 receive \$0-cutoff;
+#X obj 73 225 pack f 20;
+#X obj 73 249 line~;
+#X obj 73 283 +~;
+#X obj 166 264 inlet~;
+#X obj 73 307 +~;
+#X obj 73 331 mtof~;
+#X obj 126 407 receive \$0-resonance;
+#X obj 126 431 pack f 20;
+#X obj 126 455 line~;
+#X obj 61 586 outlet~;
+#X obj 73 355 clip~ 20 17000;
+#X text 166 244 Entrada-2: Mod Envelope;
+#X text 73 161 // Recibe control de cutoff de 45 a 121 MIDI;
+#X text 73 181 Esto se traduce a 110 Hz a 8.8 kHz;
+#X text 183 375 De lo contrario [bob~] distorsiona;
+#X text 183 355 <- Limitamos la frecuencia de 20 Hz a 17 kHz;
+#X text 276 407 <- Recibe el control de resonancia de 0 a 4;
+#X text 276 427 A partir de 4 el filtro empieza a oscilar.;
+#X text 123 331 <- Convierte de MIDI a frecuencia;
+#X obj 394 185 cnv 10 455 140 empty empty empty 200 10 0 14 #ffd478
+#000000 0;
+#X obj 399 230 receive~ \$0-modulation;
+#X obj 399 288 *~;
+#X obj 417 259 receive \$0-filterMod;
+#X text 399 190 // Recibe la señal del modulador y prende/apaga usando
+el toggle de "filterMod";
+#X text 429 288 <- Este tipo de modulación es exponencial por sumarse
+antes del mtof~;
+#X text 121 586 <- Salida del Filtro hacia el amp Env;
+#X obj 51 485 cnv 10 390 90 empty empty empty 265 10 0 14 #72fa78 #000000
+0;
+#X obj 61 494 bob~;
+#X obj 11 11 cnv 10 450 100 empty empty empty 265 10 0 14 #72fa78 #000000
+0;
+#X obj 21 141 inlet~;
+#X text 111 514 Entrada-1: Audio a filtrar;
+#X text 111 534 Entrada-2: Frecuencia de corte en Hz;
+#X text 21 21 Filter;
+#X text 101 494 <– Filtro tipo "Moog";
+#X text 111 554 Entrada-3: Resonancia;
+#X text 21 41 La parte más iconica de un sinte sustractiva es el filtro.
+En el caso de moog es un filtro paso bajo tipo escalera (por que el
+circuito parace una escalera) y es caracteristico por tener un tono
+grueso y calido.;
+#X text 21 121 Entrada: Audio de la mezcla de osciladores;
+#X connect 0 0 1 0;
 #X connect 1 0 2 0;
 #X connect 2 0 3 0;
-#X connect 3 0 4 0;
-#X connect 4 0 6 0;
-#X connect 5 0 4 1;
-#X connect 6 0 9 0;
+#X connect 3 0 5 0;
+#X connect 4 0 3 1;
+#X connect 5 0 6 0;
+#X connect 6 0 11 0;
 #X connect 7 0 8 0;
-#X connect 8 0 6 1;
-#X connect 9 0 16 0;
-#X connect 10 0 8 1;
-#X connect 11 0 12 0;
-#X connect 12 0 13 0;
-#X connect 13 0 0 2;
-#X connect 14 0 0 0;
-#X connect 16 0 0 1;
-#X restore 738 444 pd filter;
-#N canvas 823 468 450 300 ampEnvelope 0;
-#X obj 221 188 en.adsr~;
-#X obj 221 26 receive \$0-gate;
-#X obj 276 103 t f f;
-#X obj 245 55 receive \$0-Attack;
-#X obj 276 79 receive \$0-Decay;
-#X obj 260 135 receive \$0-Sustain;
-#X obj 143 207 *~;
-#X obj 143 236 outlet~;
-#X obj 143 157 inlet~;
-#X obj 260 159 sqrt;
-#X connect 0 0 6 1;
-#X connect 1 0 0 0;
-#X connect 2 0 0 2;
-#X connect 2 1 0 4;
-#X connect 3 0 0 1;
-#X connect 4 0 2 0;
-#X connect 5 0 9 0;
-#X connect 6 0 7 0;
-#X connect 8 0 6 0;
-#X connect 9 0 0 3;
-#X restore 738 473 pd ampEnvelope;
-#N canvas 283 550 583 444 modulation 0;
-#X obj 93 236 receive \$0-modMix;
-#X obj 12 415 send~ \$0-modulation;
-#X obj 249 271 receive \$0-modAmount;
-#X obj 249 343 pack f 20;
-#X obj 249 367 line~;
-#X obj 12 386 *~;
-#X obj 93 260 pack f 20;
-#X obj 93 284 line~;
-#X obj 12 141 inlet~;
-#X obj 45 196 inlet~;
-#X obj 249 295 pow 2;
-#X obj 249 319 * 48;
-#X obj 12 312 crossfade~;
-#X text 12 121 Entrada-1: Oscilador 3;
-#X text 45 176 Entrada-2: Noise;
-#X text 93 216 // Recibe control de mezcla entre OSC3 y Noise (0 a
+#X connect 8 0 9 0;
+#X connect 9 0 28 2;
+#X connect 11 0 28 1;
+#X connect 21 0 22 0;
+#X connect 22 0 5 1;
+#X connect 23 0 22 1;
+#X connect 28 0 10 0;
+#X connect 30 0 28 0;
+#X restore 738 454 pd filter;
+#N canvas 7 22 633 444 modulation 0;
+#X obj 97 211 receive \$0-modMix;
+#X obj 16 390 send~ \$0-modulation;
+#X obj 253 246 receive \$0-modAmount;
+#X obj 253 318 pack f 20;
+#X obj 253 342 line~;
+#X obj 16 361 *~;
+#X obj 97 235 pack f 20;
+#X obj 97 259 line~;
+#X obj 16 116 inlet~;
+#X obj 49 171 inlet~;
+#X obj 253 270 pow 2;
+#X obj 253 294 * 48;
+#X obj 16 287 crossfade~;
+#X text 16 96 Entrada-1: Oscilador 3;
+#X text 49 151 Entrada-2: Noise;
+#X text 97 191 // Recibe control de mezcla entre OSC3 y Noise (0 a
 1);
-#X text 249 251 // Recibe cantidad de modulación de 0 a 1;
-#X text 289 295 <- Cambia la curva de valores;
-#X text 289 319 <- Escala valores de 0 a 48 (MIDI);
-#X text 152 415 <- Envia modulador a osciladores y filtro;
-#X obj 12 41 cnv 10 290 45 empty empty MODULACION 200 10 0 14 #ffd478
-#000000 0;
+#X text 253 226 // Recibe cantidad de modulación de 0 a 1;
+#X text 293 270 <- Cambia la curva de valores;
+#X text 293 294 <- Escala valores de 0 a 48 (MIDI);
+#X obj 11 11 cnv 10 440 75 empty empty empty 200 10 0 14 #ffd478 #000000
+0;
+#X text 16 16 Modulation;
+#X text 16 36 En este subpatch \, recibimos la señal del oscilador
+3 y noise para enviar una mezcla de estas a modular la frecuencia de
+los osciladores y el filtro.;
+#X text 156 390 <- Envia a modular la frecuencia de los osciladores
+y filtro;
 #X connect 0 0 6 0;
 #X connect 2 0 10 0;
 #X connect 3 0 4 0;
@@ -384,7 +432,7 @@ y ruido para luego sumarlo y enviarlo a al filtro.;
 #X connect 11 0 3 0;
 #X connect 12 0 5 0;
 #X restore 828 375 pd modulation;
-#N canvas 486 407 824 463 delay 0;
+#N canvas 22 22 824 463 delay 0;
 #X obj 35 242 inlet~;
 #X obj 343 337 *~;
 #X obj 376 248 pow 2;
@@ -392,10 +440,9 @@ y ruido para luego sumarlo y enviarlo a al filtro.;
 #X obj 376 296 line~;
 #X obj 343 111 delread4~ \$0-delay;
 #X obj 198 200 lop~ 4000;
-#X obj 76 297 +~;
-#X obj 76 326 delwrite~ \$0-delay 5000;
-#X obj 35 376 +~;
-#X obj 35 424 outlet~;
+#X obj 35 297 +~;
+#X obj 35 326 delwrite~ \$0-delay 5000;
+#X obj 343 366 outlet~;
 #X obj 343 82 line~;
 #X obj 343 34 receive \$0-delayTime;
 #X obj 376 224 receive \$0-delayLevel;
@@ -407,28 +454,26 @@ y ruido para luego sumarlo y enviarlo a al filtro.;
 #X obj 198 224 hip~ 10;
 #X obj 343 58 pack f 100;
 #X connect 0 0 7 0;
-#X connect 0 0 9 0;
-#X connect 1 0 9 1;
+#X connect 1 0 9 0;
 #X connect 2 0 3 0;
 #X connect 3 0 4 0;
 #X connect 4 0 1 1;
 #X connect 5 0 6 0;
 #X connect 5 0 1 0;
-#X connect 6 0 19 0;
+#X connect 6 0 18 0;
 #X connect 7 0 8 0;
-#X connect 9 0 10 0;
-#X connect 11 0 5 0;
-#X connect 12 0 20 0;
-#X connect 13 0 2 0;
-#X connect 14 0 7 1;
-#X connect 15 0 16 0;
+#X connect 10 0 5 0;
+#X connect 11 0 19 0;
+#X connect 12 0 2 0;
+#X connect 13 0 7 1;
+#X connect 14 0 15 0;
+#X connect 15 0 13 0;
 #X connect 16 0 14 0;
-#X connect 17 0 15 0;
-#X connect 19 0 14 1;
-#X connect 20 0 11 0;
-#X restore 738 529 pd delay;
+#X connect 18 0 13 1;
+#X connect 19 0 10 0;
+#X restore 788 524 pd delay;
 #X text 903 141 Salida-1: Pitch (MIDI);
-#N canvas 404 69 788 919 oscillator-3 0;
+#N canvas 18 22 856 756 oscillator-3 0;
 #X obj 11 688 cnv 10 500 125 empty empty empty 20 12 0 14 #75d5ff #404040
 0;
 #X obj 18 695 oscillator~;
@@ -442,13 +487,9 @@ y ruido para luego sumarlo y enviarlo a al filtro.;
 #X obj 228 386 line~;
 #X obj 18 405 +~;
 #X obj 18 458 mtof~;
-#X obj 18 827 outlet~;
 #X obj 77 642 pack f 20;
 #X obj 77 666 line~;
 #X obj 18 429 +~;
-#X obj 361 352 receive~ \$0-modulation;
-#X obj 361 410 *~;
-#X obj 379 381 receive \$0-oscMod;
 #X obj 228 338 / 100;
 #X obj 18 155 lop~;
 #X obj 43 131 receive \$0-glide;
@@ -457,15 +498,12 @@ para afinar el oscilador usando octavas y cents.;
 #X text 78 338 convierte a cents ->;
 #X text 68 313 <- convierte a octava;
 #X text 217 618 <- Cambia el ancho de pulso de la onda cuadrada;
-#X text 361 312 // Recibe la señal del modulador y prende/apaga usando
-el toggle de "oscMod";
 #X text 58 155 <- [lop~] puede ser usado como un [line~] pero la manera
 en la que conecta los valores es más logarítmico.;
 #X text 108 695 <- Oscilador tipo polyBLEP libre de Aliasing (suena
 más análogo);
 #X text 108 778 <- multiplexor: Entran tres señales y eliges cuál
 quieres que salga.;
-#X text 78 827 <- Salida-1: Audio del Oscilador;
 #X obj 36 264 receive \$0-octave-3;
 #X obj 228 314 receive \$0-tune-3;
 #X obj 77 618 receive \$0-pulse-3;
@@ -490,65 +528,85 @@ un portamento \, glissando o "glide" de la nota usando [lop~];
 #X text 18 31 De manera general \, todos los controles de afinación
 y control de pitch del oscilador para luego enviar las tres formas
 del oscilador a un multiplexor y enviarlas a la mezcladora.;
+#X obj 357 309 cnv 10 420 130 empty empty empty 200 10 0 14 #ffd478
+#000000 0;
+#X obj 361 352 receive~ \$0-modulation;
+#X obj 361 410 *~;
+#X obj 379 381 receive \$0-oscMod;
+#X text 361 312 // Recibe la señal del modulador y prende/apaga usando
+el toggle de "oscMod";
+#X obj 202 816 cnv 10 190 40 empty empty empty 200 10 0 14 #ffd478
+#000000 0;
 #X text 18 857 También enviamos la señal del oscilador 3 como modulador.
 ;
+#X obj 11 816 cnv 10 190 40 empty empty empty 290 10 0 14 #ff89d8 #000000
+0;
+#X obj 18 827 outlet~;
+#X text 78 827 <- Salida de Oscilador hacia mezcladora;
+#X text 518 675 [oscillator~];
+#X text 528 695 Entrada-1: Frecuencia en Hz;
+#X text 528 715 Entrada-2: Pulso de forma de onda cuadrada;
+#X text 538 735 (0 a 1);
+#X text 528 755 Salida-1: Diente de Sierra;
+#X text 528 775 Salida-2: Onda Cuadrada;
+#X text 528 795 Salida-3: Onda Triangular;
 #X connect 1 0 2 0;
 #X connect 1 1 2 1;
 #X connect 1 2 2 2;
-#X connect 2 0 12 0;
-#X connect 3 0 20 0;
+#X connect 2 0 52 0;
+#X connect 3 0 16 0;
 #X connect 4 0 10 0;
 #X connect 5 0 6 0;
 #X connect 6 0 7 0;
 #X connect 7 0 4 1;
 #X connect 8 0 9 0;
 #X connect 9 0 10 1;
-#X connect 10 0 15 0;
-#X connect 11 0 38 0;
-#X connect 13 0 14 0;
-#X connect 14 0 1 1;
-#X connect 15 0 11 0;
-#X connect 16 0 17 0;
-#X connect 17 0 15 1;
-#X connect 18 0 17 1;
-#X connect 19 0 8 0;
-#X connect 20 0 4 0;
-#X connect 21 0 20 1;
-#X connect 31 0 5 0;
-#X connect 32 0 19 0;
-#X connect 33 0 13 0;
-#X connect 34 0 2 3;
-#X connect 35 0 36 0;
-#X connect 36 0 42 1;
-#X connect 37 0 41 0;
-#X connect 38 0 43 0;
-#X connect 39 0 40 0;
-#X connect 40 0 38 1;
-#X connect 40 1 44 0;
-#X connect 41 0 35 0;
-#X connect 42 0 43 1;
-#X connect 43 0 1 0;
-#X connect 44 0 42 0;
+#X connect 10 0 14 0;
+#X connect 11 0 32 0;
+#X connect 12 0 13 0;
+#X connect 13 0 1 1;
+#X connect 14 0 11 0;
+#X connect 15 0 8 0;
+#X connect 16 0 4 0;
+#X connect 17 0 16 1;
+#X connect 25 0 5 0;
+#X connect 26 0 15 0;
+#X connect 27 0 12 0;
+#X connect 28 0 2 3;
+#X connect 29 0 30 0;
+#X connect 30 0 36 1;
+#X connect 31 0 35 0;
+#X connect 32 0 37 0;
+#X connect 33 0 34 0;
+#X connect 34 0 32 1;
+#X connect 34 1 38 0;
+#X connect 35 0 29 0;
+#X connect 36 0 37 1;
+#X connect 37 0 1 0;
+#X connect 38 0 36 0;
+#X connect 45 0 46 0;
+#X connect 46 0 14 1;
+#X connect 47 0 46 1;
 #X restore 773 288 pd oscillator-3;
-#X obj 729 566 cnv 10 380 110 empty empty OUTPUT 325 10 0 14 #9f9f9f
+#X obj 729 576 cnv 10 380 110 empty empty OUTPUT 325 10 0 14 #9f9f9f
 #000000 0;
-#X obj 738 645 dac~ 1 2;
-#N canvas 241 504 304 195 volume 0;
+#X obj 738 655 dac~ 1 2;
+#N canvas 0 22 477 267 volume 0;
 #X obj 12 55 inlet~;
-#X obj 12 103 *~;
-#X obj 12 141 outlet~;
-#X obj 150 60 pack f 20;
-#X obj 150 84 line~;
-#X obj 150 12 receive \$0-volume;
-#X obj 150 36 pow 2;
+#X obj 12 163 *~;
+#X obj 12 201 outlet~;
+#X obj 150 120 pack f 20;
+#X obj 150 144 line~;
+#X obj 150 72 receive \$0-volume;
+#X obj 150 96 pow 2;
 #X connect 0 0 1 0;
 #X connect 1 0 2 0;
 #X connect 3 0 4 0;
 #X connect 4 0 1 1;
 #X connect 5 0 6 0;
 #X connect 6 0 3 0;
-#X restore 738 606 pd volume;
-#N canvas 241 504 450 300 drive 0;
+#X restore 738 616 pd volume;
+#N canvas 1 22 450 300 drive 0;
 #X obj 17 47 inlet~;
 #X obj 17 91 *~;
 #X obj 17 115 expr~ tanh($v1);
@@ -562,8 +620,8 @@ del oscilador a un multiplexor y enviarlas a la mezcladora.;
 #X connect 4 0 5 0;
 #X connect 5 0 6 0;
 #X connect 6 0 1 1;
-#X restore 738 577 pd drive;
-#N canvas 349 139 819 741 oscillator-2 0;
+#X restore 738 587 pd drive;
+#N canvas 17 22 836 756 oscillator-2 0;
 #X obj 11 568 cnv 10 500 125 empty empty empty 20 12 0 14 #75d5ff #404040
 0;
 #X obj 18 575 oscillator~;
@@ -577,13 +635,9 @@ del oscilador a un multiplexor y enviarlas a la mezcladora.;
 #X obj 228 386 line~;
 #X obj 18 405 +~;
 #X obj 18 458 mtof~;
-#X obj 18 707 outlet~;
 #X obj 77 522 pack f 20;
 #X obj 77 546 line~;
 #X obj 18 429 +~;
-#X obj 361 352 receive~ \$0-modulation;
-#X obj 361 410 *~;
-#X obj 379 381 receive \$0-oscMod;
 #X obj 228 338 / 100;
 #X obj 18 155 lop~;
 #X obj 43 131 receive \$0-glide;
@@ -592,18 +646,13 @@ para afinar el oscilador usando octavas y cents.;
 #X text 78 338 convierte a cents ->;
 #X text 68 313 <- convierte a octava;
 #X text 217 498 <- Cambia el ancho de pulso de la onda cuadrada;
-#X text 361 312 // Recibe la señal del modulador y prende/apaga usando
-el toggle de "oscMod";
 #X text 58 155 <- [lop~] puede ser usado como un [line~] pero la manera
 en la que conecta los valores es más logarítmico.;
 #X text 108 575 <- Oscilador tipo polyBLEP libre de Aliasing (suena
 más análogo);
 #X text 108 658 <- multiplexor: Entran tres señales y eliges cuál
 quieres que salga.;
-#X text 78 707 <- Salida-1: Audio del Oscilador;
 #X text 68 458 <- Convierte valores MIDI a frecuencia (Hz);
-#X text 391 410 <- Este tipo de modulación es exponencial por sumarse
-antes del mtof~;
 #X text 168 101 <- Recibe la información del pitch (en MIDI) y crea
 un portamento \, glissando o "glide" de la nota usando [lop~];
 #X obj 77 498 receive \$0-pulse-2;
@@ -616,32 +665,52 @@ un portamento \, glissando o "glide" de la nota usando [lop~];
 #X text 18 31 De manera general \, todos los controles de afinación
 y control de pitch del oscilador para luego enviar las tres formas
 del oscilador a un multiplexor y enviarlas a la mezcladora.;
+#X obj 357 309 cnv 10 455 140 empty empty empty 200 10 0 14 #ffd478
+#000000 0;
+#X obj 361 352 receive~ \$0-modulation;
+#X obj 361 410 *~;
+#X obj 379 381 receive \$0-oscMod;
+#X text 361 312 // Recibe la señal del modulador y prende/apaga usando
+el toggle de "oscMod";
+#X text 391 410 <- Este tipo de modulación es exponencial por sumarse
+antes del mtof~;
+#X obj 11 696 cnv 10 380 40 empty empty empty 290 10 0 14 #ff89d8 #000000
+0;
+#X obj 18 707 outlet~;
+#X text 78 707 <- Salida de Oscilador hacia mezcladora;
+#X text 518 555 [oscillator~];
+#X text 528 575 Entrada-1: Frecuencia en Hz;
+#X text 528 595 Entrada-2: Pulso de forma de onda cuadrada;
+#X text 538 615 (0 a 1);
+#X text 528 635 Salida-1: Diente de Sierra;
+#X text 528 655 Salida-2: Onda Cuadrada;
+#X text 528 675 Salida-3: Onda Triangular;
 #X connect 1 0 2 0;
 #X connect 1 1 2 1;
 #X connect 1 2 2 2;
-#X connect 2 0 12 0;
-#X connect 3 0 20 0;
+#X connect 2 0 41 0;
+#X connect 3 0 16 0;
 #X connect 4 0 10 0;
 #X connect 5 0 6 0;
 #X connect 6 0 7 0;
 #X connect 7 0 4 1;
 #X connect 8 0 9 0;
 #X connect 9 0 10 1;
-#X connect 10 0 15 0;
+#X connect 10 0 14 0;
 #X connect 11 0 1 0;
-#X connect 13 0 14 0;
-#X connect 14 0 1 1;
-#X connect 15 0 11 0;
-#X connect 16 0 17 0;
-#X connect 17 0 15 1;
-#X connect 18 0 17 1;
-#X connect 19 0 8 0;
-#X connect 20 0 4 0;
-#X connect 21 0 20 1;
-#X connect 34 0 13 0;
-#X connect 35 0 2 3;
-#X connect 36 0 19 0;
-#X connect 37 0 5 0;
+#X connect 12 0 13 0;
+#X connect 13 0 1 1;
+#X connect 14 0 11 0;
+#X connect 15 0 8 0;
+#X connect 16 0 4 0;
+#X connect 17 0 16 1;
+#X connect 27 0 12 0;
+#X connect 28 0 2 3;
+#X connect 29 0 15 0;
+#X connect 30 0 5 0;
+#X connect 35 0 36 0;
+#X connect 36 0 14 1;
+#X connect 37 0 36 1;
 #X restore 755 264 pd oscillator-2;
 #X text 733 31 Entrada de Teclado MIDI con procesador monofonico;
 #X text 903 161 Salida-2: Gate (0/1);
@@ -654,16 +723,16 @@ del oscilador a un multiplexor y enviarlas a la mezcladora.;
 #X array \$0-scope 4410 float 0;
 #X coords 0 1 4409 -1 50 140 1 0 0;
 #X restore 645 203 graph;
-#X obj 526 553 loadbang;
-#X msg 526 577 1;
+#X obj 526 563 loadbang;
+#X msg 526 587 1;
 #X obj 23 494 loadbang;
 #X msg 23 518 dsp 1;
 #X obj 23 542 send pd;
-#X obj 526 601 metro 100;
-#X obj 526 625 tabwrite~ \$0-scope;
+#X obj 526 611 metro 100;
+#X obj 526 635 tabwrite~ \$0-scope;
 #X text 850 50 <- Entrada de Notas MIDI;
 #X obj 770 51 notein;
-#N canvas 215 257 893 561 rangos 0;
+#N canvas 215 217 893 561 rangos 0;
 #X text 9 11 Rangos:;
 #X text 19 151 Oscillator Bank;
 #X text 19 261 Mixer;
@@ -692,31 +761,78 @@ del oscilador a un multiplexor y enviarlas a la mezcladora.;
 ;
 #X text 23 404 // Crea un camino hacia la carpeta de abstracciones
 para usarlas;
-#X text 526 533 // Osciloscopio de 100 ms;
+#X text 526 543 // Osciloscopio de 100 ms;
+#N canvas 2 22 602 498 ampEnvelope 0;
+#X obj 16 11 cnv 10 450 60 empty empty empty 265 10 0 14 #72fa78 #000000
+0;
+#X obj 21 413 *~;
+#X obj 21 101 inlet~;
+#X obj 56 379 cnv 10 400 30 empty empty empty 265 10 0 14 #72fa78 #000000
+0;
+#X obj 71 384 en.adsr~;
+#X obj 84 251 receive \$0-modAttack;
+#X obj 71 171 receive \$0-gate;
+#X obj 97 278 receive \$0-modDecay;
+#X obj 97 302 t f f;
+#X obj 110 331 receive \$0-modSustain;
+#X text 84 211 // Recibe los controles del envolvente \, en el minimoog
+el control de Decay y Release es el mismo.;
+#X text 141 384 <- Generador de envolvente tipo ADSR.;
+#X text 21 81 Entrada: Audio del Filtro;
+#X text 21 16 Amp. Envelope;
+#X text 21 36 Envolvente dedicado a controlar la amplitud (volumen)
+de la señal filtrada antes de ser enviada al delay y output.;
+#X obj 11 438 cnv 10 190 40 empty empty empty 330 10 0 14 #ff7d78 #000000
+0;
+#X obj 202 438 cnv 10 190 40 empty empty empty 325 10 0 14 #9f9f9f
+#000000 0;
+#X obj 21 447 outlet~;
+#X text 81 447 <- Salida al delay y output;
+#X text 281 254 [en.adsr~];
+#X text 291 274 Entrada-1: Gate (0/1);
+#X text 71 131 // Recibe el gate del control del teclado para activar
+el envolvente. 1 = Encencido \, 0 = Apagado;
+#X text 291 294 Entrada-2: Ataque en milisegundos;
+#X text 291 314 Entrada-3: Decay en milisegundos;
+#X text 291 334 Entrada-4: Sustain en amplitud de 0 a 1;
+#X text 291 354 Entrada-5: Release en milisegundos;
+#X connect 1 0 17 0;
+#X connect 2 0 1 0;
+#X connect 4 0 1 1;
+#X connect 5 0 4 1;
+#X connect 6 0 4 0;
+#X connect 7 0 8 0;
+#X connect 8 0 4 2;
+#X connect 8 1 4 4;
+#X connect 9 0 4 3;
+#X restore 738 483 pd ampEnvelope;
+#X obj 738 548 +~;
 #X connect 56 0 57 0;
 #X connect 56 1 58 0;
 #X connect 59 0 62 0;
-#X connect 60 0 65 1;
+#X connect 60 0 64 1;
 #X connect 60 0 62 3;
 #X connect 61 0 63 1;
 #X connect 62 0 63 0;
-#X connect 63 0 64 0;
-#X connect 64 0 66 0;
-#X connect 66 0 72 0;
-#X connect 68 0 65 0;
-#X connect 68 0 62 2;
+#X connect 63 0 96 0;
+#X connect 65 0 97 1;
+#X connect 67 0 64 0;
+#X connect 67 0 62 2;
+#X connect 70 0 69 0;
+#X connect 70 0 69 1;
+#X connect 70 0 87 0;
 #X connect 71 0 70 0;
-#X connect 71 0 70 1;
-#X connect 71 0 88 0;
-#X connect 72 0 71 0;
-#X connect 73 0 62 1;
-#X connect 79 0 56 1;
-#X connect 80 0 56 0;
-#X connect 82 0 83 0;
-#X connect 83 0 87 0;
+#X connect 72 0 62 1;
+#X connect 78 0 56 1;
+#X connect 79 0 56 0;
+#X connect 81 0 82 0;
+#X connect 82 0 86 0;
+#X connect 83 0 84 0;
 #X connect 84 0 85 0;
-#X connect 85 0 86 0;
-#X connect 87 0 88 0;
-#X connect 90 0 80 0;
-#X connect 90 1 79 0;
+#X connect 86 0 87 0;
+#X connect 89 0 79 0;
+#X connect 89 1 78 0;
+#X connect 96 0 97 0;
+#X connect 96 0 65 0;
+#X connect 97 0 71 0;
 #X coords 0 -1 1 1 698 347 2 10 10;

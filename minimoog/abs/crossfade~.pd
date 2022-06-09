@@ -1,0 +1,28 @@
+#N canvas 551 263 536 356 12;
+#X obj 12 131 inlet~;
+#X obj 30 170 sig~ 1;
+#X obj 30 199 -~;
+#X obj 12 228 *~;
+#X obj 144 262 +~;
+#X obj 144 291 outlet~;
+#X obj 162 131 inlet~;
+#X obj 162 228 *~;
+#X obj 302 131 inlet~;
+#X text 12 111 Entrada-1: Audio A;
+#X text 162 111 Entrada-2 Audio B;
+#X text 302 111 Entrada-3: Crossfade (0 a 1);
+#X text 12 11 [crossfade~];
+#X text 204 291 <- Salida-1: Audio a Enviar;
+#X text 12 31 Esta abstracción hace una mezcla cruzada entre dos señales
+de audio donde la entrada 3 controla el volumen de ambas. Cuando esta
+en 0 se envia el Audio A \, 0.5 ambos Audios A y B y 1 solo Audio B.
+;
+#X connect 0 0 3 0;
+#X connect 1 0 2 0;
+#X connect 2 0 3 1;
+#X connect 3 0 4 0;
+#X connect 4 0 5 0;
+#X connect 6 0 7 0;
+#X connect 7 0 4 1;
+#X connect 8 0 7 1;
+#X connect 8 0 2 1;

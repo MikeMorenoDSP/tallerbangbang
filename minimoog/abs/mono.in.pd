@@ -1,0 +1,43 @@
+#N canvas 481 192 459 706 12;
+#X obj 5 11 cnv 10 440 90 empty empty empty 20 12 0 14 #feffc6 #404040
+0;
+#X obj 92 285 list prepend;
+#X obj 191 227 > 0;
+#X obj 115 406 > 0;
+#X obj 115 430 change;
+#X obj 115 454 outlet;
+#X obj 92 227 t f f;
+#X obj 173 256 *;
+#X obj 138 353 tabwrite \$0-note;
+#X obj 115 382 array sum \$0-note;
+#X obj 158 324 array define \$0-note 127;
+#X obj 12 527 sel 0;
+#X obj 44 551 outlet;
+#X obj 12 503 array max \$0-note;
+#X obj 92 324 t b b l;
+#X text 94 551 <- Salida-1: Pitch (MIDI);
+#X text 12 38 Registra que notas estan prendidas y apagadas en un array
+y en base a eso determina dos cosas: 1 cual es la nota midi encendida
+con el valor mas alto (Pitch) y 2 si hay una nota midi encendida (Gate)
+;
+#X text 12 18 [mono.in] – Procesador MIDI monofonico;
+#X obj 92 188 inlet;
+#X obj 191 188 inlet;
+#X text 165 454 <- Salida-2: Gate (0/1);
+#X text 92 168 Entrada-1: Nota MIDI;
+#X text 231 188 <- Entrada-2: Velocidad;
+#X connect 1 0 14 0;
+#X connect 2 0 7 1;
+#X connect 3 0 4 0;
+#X connect 4 0 5 0;
+#X connect 6 0 1 0;
+#X connect 6 1 7 0;
+#X connect 7 0 1 1;
+#X connect 9 0 3 0;
+#X connect 11 1 12 0;
+#X connect 13 0 11 0;
+#X connect 14 0 13 0;
+#X connect 14 1 9 0;
+#X connect 14 2 8 0;
+#X connect 18 0 6 0;
+#X connect 19 0 2 0;
